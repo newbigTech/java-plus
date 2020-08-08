@@ -1,0 +1,9 @@
+{
+  "table_name": "test_table3",
+  "pkey": "${utdid}",
+  "skey": "${DataSet.id}",
+  "value_field": "fea_json",
+  "async": true,
+  "hashTableNum": 4,
+  "other_dataSet_key": "Solution_processor_config#service/filter/SessionFilter$tag"
+}

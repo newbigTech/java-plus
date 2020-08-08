@@ -1,0 +1,5 @@
+{
+    "query_convertor": "converter.TairDataSetConvertor",
+    "user_name": "xxx",
+    "timeout": 1000
+}

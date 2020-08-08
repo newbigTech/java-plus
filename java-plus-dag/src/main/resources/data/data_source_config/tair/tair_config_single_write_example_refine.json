@@ -1,0 +1,13 @@
+{
+  "query_convertor": "converter.TairDataSetConvertor",
+  "user_name": "xxx",
+  "timeout": 1000,
+  "namespace": 4023,
+  "pkey": "yt_ut_test",
+  "data_set_field_name": "unit_test_ds",
+  "ttl": 100000,
+  "use_value_from_context": [
+    "pkey",
+    "skey"
+  ]
+}

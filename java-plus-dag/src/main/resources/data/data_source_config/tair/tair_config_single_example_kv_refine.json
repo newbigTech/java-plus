@@ -1,0 +1,6 @@
+{
+    "user_name": "xxx",
+    "timeout": 1000,
+    "namespace": 4023,
+    "pkey": "${pkey1}"
+}

@@ -1,0 +1,31 @@
+{
+  "test_a": "abc",
+  "test_b": "123",
+  "tair_data_source_key": "tair_data_source1",
+  "igraph_data_source_key": "igraph_data_source1",
+  "tair_data_source1": {
+    "query_convertor": "${pkey}",
+    "user_name": "xxx",
+    "timeout": 1000,
+    "namespace": 4023,
+    "pkey": "yt_ut_test",
+    "data_set_field_name": "unit_test_ds",
+    "ttl": 100000,
+    "use_value_from_context": [
+      "pkey",
+      "skey"
+    ]
+  },
+  "tair_data_source2": {
+    "query_convertor": "converter.TairDataSetConvertor",
+    "user_name": "xxx",
+    "timeout": 1000,
+    "namespace": 4023
+  },
+  "igraph_data_source1": {
+    "query_convertor": "converter.IGraphDataSetConvertor",
+    "table_name": "test_table",
+    "pkey": "common_user",
+    "value_field": "result"
+  }
+}

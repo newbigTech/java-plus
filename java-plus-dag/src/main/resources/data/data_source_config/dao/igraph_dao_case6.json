@@ -1,0 +1,7 @@
+{
+  "table_name": "test_table",
+  "pkey": "",
+  "value_field": "result",
+  "async": false,
+  "alias": "result=igraph_common_value"
+}

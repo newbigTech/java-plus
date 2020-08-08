@@ -1,0 +1,6 @@
+{
+  "table_name": "test_table2",
+  "pkey": "",
+  "value_field": "tag_id,tag_name,vdo_id",
+  "async": false
+}

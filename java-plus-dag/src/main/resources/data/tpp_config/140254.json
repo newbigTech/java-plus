@@ -1,0 +1,74 @@
+[
+  {
+    "key": "Solution_datasource_be_backup",
+    "type": "JSON",
+    "content": "{\n  \"core/service/recall/BeBaseRecall$backup\": {\n    \"beKey\": {\n      \"required\": {\n        \"vipServer\": \"com.taobao.search.xxx.vipserver\",\n        \"bizName\": \"biz_xxx\",\n        \"searcher\": \"searcher_xxx\",\n        \"proxyer\": \"proxyer_xxx\",\n        \"outfmt\": \"FB2\",\n        \"returnCount\": 500,\n        \"timeout\": 80,\n        \"async\": true\n      },\n      \"optional\": {\n        \"utdid\": \"${utdid}\",\n        \"uid\": \"${uid}\",\n        \"distinct_top_n\": 2\n      },\n      \"default\": {}\n    },\n    \"matchTypeMapping\": {\n      \"BACKUP\": [\n        125\n      ]\n    }\n  }\n}",
+    "description": "某业务兜底BE召回"
+  },
+  {
+    "key": "Solution_datasource_be_recall1",
+    "type": "JSON",
+    "content": "{\n  \"core/service/recall/BeBaseRecall$recall1\": {\n    \"beKey\": {\n      \"required\": {\n        \"vipServer\": \"com.taobao.search.xxx.vipserver\",\n        \"bizName\": \"biz_xxx\",\n        \"searcher\": \"searcher_xxx\",\n        \"proxyer\": \"proxyer_xxx\",\n        \"outfmt\": \"FB2\",\n        \"returnCount\": 500,\n        \"timeout\": 80,\n        \"async\": true\n      },\n      \"optional\": {\n        \"utdid\": \"${utdid}\",\n        \"uid\": \"${uid}\",\n        \"distinct_top_n\": 2\n      },\n      \"default\": {}\n    },\n    \"matchTypeMapping\": {\n      \"R12I\": [\n        123\n      ]\n    }\n  }\n}",
+    "description": "某业务1的BE召回"
+  },
+  {
+    "key": "Solution_datasource_be_recall2",
+    "type": "JSON",
+    "content": "{\n  \"core/service/recall/BeBaseRecall$recall2\": {\n    \"beKey\": {\n      \"required\": {\n        \"vipServer\": \"com.taobao.search.xxx.vipserver\",\n        \"bizName\": \"biz_xxx\",\n        \"searcher\": \"searcher_xxx\",\n        \"proxyer\": \"proxyer_xxx\",\n        \"outfmt\": \"FB2\",\n        \"returnCount\": 500,\n        \"timeout\": 80,\n        \"async\": true\n      },\n      \"optional\": {\n        \"utdid\": \"${utdid}\",\n        \"uid\": \"${uid}\",\n        \"distinct_top_n\": 2\n      },\n      \"default\": {}\n    },\n    \"matchTypeMapping\": {\n      \"R22I\": [\n        124\n      ]\n    }\n  }\n}",
+    "description": "某业务2的BE召回"
+  },
+  {
+    "key": "Solution_datasource_igraph",
+    "type": "JSON",
+    "content": "{\n  \"datasource/IGraphDataSource$berecallUserFeature\": {\n    \"table_name\": \"table_name_xxx\",\n    \"pkey\": \"${utdid}\",\n    \"value_field\": \"fea_json\",\n    \"async\": true,\n    \"timeout\": 30\n  },\n  \"datasource/IGraphDataSource$video_rtp_userFeature\": {\n    \"table_name\": \"table_name_xxx\",\n    \"pkey\": \"${utdid}\",\n    \"value_field\": \"fea_json\",\n    \"async\": true\n  },\n  \"datasource/IGraphDataSource$utdidVdoPlaylog\": {\n    \"table_name\": \"table_name_xxx\",\n    \"pkey\": \"${utdid}\",\n    \"value_field\": \"utdid,vdo_id,show_id,vst_time,ts\",\n    \"async\": true,\n    \"orderby\": \"-vst_time\",\n    \"action\": true\n  }\n}",
+    "description": "iGraph集中配置"
+  },
+  {
+    "key": "Solution_datasource_rtp",
+    "type": "JSON",
+    "content": "{\n  \"core/service/rank/RtpBaseRank\": {\n    \"useCm2\": false,\n    \"processorTimeout\": 110,\n    \"rtpDomain\": \"com.taobao.rtp.xxx.vipserver\",\n    \"rtpBiz\": \"biz_name_xxx\",\n    \"async\": false,\n    \"rtpTimeOut\": 100,\n    \"userFeatureDataSource\": \"Solution_datasource_igraph#datasource/IGraphDataSource$video_rtp_userFeature\",\n    \"customUIContextFeature\": {},\n    \"customUserContextFeature\": {},\n    \"needSort\": true\n  }\n}",
+    "description": "某业务RTP配置"
+  },
+  {
+    "key": "Solution_processor",
+    "type": "STRING",
+    "content": "Solution_processor_start#engine.dag.DAGEngineProcessor$start",
+    "description": "方案执行入口"
+  },
+  {
+    "key": "Solution_processor_main",
+    "type": "JSON",
+    "content": "{\n  \"engine/dag/DAGEngineProcessor$main\": {\n    \"threadCntPerQuery\": 2,\n    \"processorTimeout\": 200,\n    \"async\": true,\n    \"processors\": {\n      \"recall1\": \"Solution_processor_recall1#engine/dag/DAGEngineProcessor$recall1\",\n      \"recall2\": \"Solution_processor_recall2#engine/dag/DAGEngineProcessor$recall2\",\n      \"PreMerge\": \"Solution_processor_merge#core/service/merge/CommonBaseMerge$pre_merge\",\n      \"RtpRank\": \"Solution_datasource_rtp#core/service/rank/RtpBaseRank\"\n    },\n    \"processorDependencies\": {\n      \"recall1\": \"PreMerge\",\n      \"recall2\": \"PreMerge\",\n      \"PreMerge\": \"RtpRank\"\n    }\n  }\n}",
+    "description": "主处理链"
+  },
+  {
+    "key": "Solution_processor_merge",
+    "type": "JSON",
+    "content": "{\n  \"core/service/merge/CommonBaseMerge$pre_merge\": {\n    \"mergeConfig\": {\n      \"recall1\": {\n        \"ratio\": 0.5,\n        \"dataSourceKey\": \"Solution_processor_recall1#engine/dag/DAGEngineProcessor$recall1\"\n      },\n      \"recall2\": {\n        \"ratio\": 0.5,\n        \"dataSourceKey\": \"Solution_processor_recall2#engine/dag/DAGEngineProcessor$recall2\"\n      }\n    },\n    \"returnCount\": 500\n  },\n  \"core/service/merge/CommonBaseMerge\": {\n    \"mergeConfig\": {\n      \"mainRecall\": {\n        \"ratio\": 1,\n        \"dataSourceKey\": \"Solution_processor_main#engine/dag/DAGEngineProcessor$main\"\n      },\n      \"backupRecall\": {\n        \"dataSourceKey\": \"Solution_processor_backup#engine/dag/DAGEngineProcessor$backup\",\n        \"backup\": true\n      }\n    },\n    \"returnCount\": 100\n  }\n}",
+    "description": "合并打散"
+  },
+  {
+    "key": "Solution_processor_prepare",
+    "type": "JSON",
+    "content": "{\n  \"engine/dag/DAGEndProcessor$prepare\": {\n    \"emptyDataSetStart\": true\n  },\n  \"engine/dag/DAGEngineProcessor$prepare\": {\n    \"threadCntPerQuery\": 3,\n    \"processorTimeout\": 50,\n    \"async\": true,\n    \"processors\": {\n      \"PlayLog\": \"Solution_datasource_igraph#datasource/IGraphDataSource$utdidVdoPlaylog\",\n      \"BeUserFeature\": \"Solution_datasource_igraph#datasource/IGraphDataSource$berecallUserFeature\",\n      \"RtpUserFeature\": \"Solution_datasource_igraph#datasource/IGraphDataSource$video_rtp_userFeature\",\n      \"End\": \"engine/dag/DAGEndProcessor$prepare\"\n    },\n    \"processorDependencies\": {\n      \"PlayLog\": \"End\",\n      \"BeUserFeature\": \"End\",\n      \"RtpUserFeature\": \"End\"\n    }\n  }\n}",
+    "description": "预处理"
+  },
+  {
+    "key": "Solution_processor_recall1",
+    "type": "JSON",
+    "content": "{\n  \"engine/dag/DAGEngineProcessor$recall1\": {\n    \"processorTimeout\": 100,\n    \"async\": true,\n    \"processors\": {\n      \"recall\": \"Solution_datasource_be_recall1#core/service/recall/BeBaseRecall$recall1\",\n      \"filter\": \"Solution_processor_config#core/service/filter/CommonBaseFilter$black_list\"\n    },\n    \"processorDependencies\": {\n      \"recall\": \"filter\"\n    }\n  }\n}",
+    "description": "某业务1的召回链"
+  },
+  {
+    "key": "Solution_processor_recall2",
+    "type": "JSON",
+    "content": "{\n  \"engine/dag/DAGEngineProcessor$recall2\": {\n    \"processorTimeout\": 100,\n    \"async\": true,\n    \"processors\": {\n      \"recall\": \"Solution_datasource_be_recall2#core/service/recall/BeBaseRecall$recall2\",\n      \"filter\": \"Solution_processor_config#core/service/filter/CommonBaseFilter$black_list\"\n    },\n    \"processorDependencies\": {\n      \"recall\": \"filter\"\n    }\n  }\n}",
+    "description": "某业务2的召回链"
+  },
+  {
+    "key": "Solution_processor_start",
+    "type": "JSON",
+    "content": "{\n  \"engine/dag/DAGEngineProcessor$start\": {\n    \"threadCntPerQuery\": 2,\n    \"processorTimeout\": 350,\n    \"async\": true,\n    \"processors\": {\n      \"prepare\": \"Solution_processor_prepare#engine/dag/DAGEngineProcessor$prepare\",\n      \"main\": \"Solution_processor_main#engine/dag/DAGEngineProcessor$main\",\n      \"backup\": \"Solution_datasource_be_backup#core/service/recall/BeBaseRecall$backup\",\n      \"merge\": \"Solution_processor_merge#core/service/merge/CommonBaseMerge\"\n    },\n    \"processorDependencies\": {\n      \"prepare\": [\n        \"main\",\n        \"backup\"\n      ],\n      \"main\": \"merge\",\n      \"backup\": \"merge\"\n    },\n    \"needCutoff\": true\n  }\n}",
+    "description": "起始DAG"
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "required": {
+    "s": "searcher_xxx",
+    "p": "proxy_xxx",
+    "vipUrl": "com.taobao.search.xxx.vipserver",
+    "bizName": "biz_xxx",
+    "outfmt": "json",
+    "returnCount": "10",
+    "timeout": "500000",
+    "abc":"${aaa}"
+  },
+  "optional": {
+    "publishid": "${123}",
+    "param2": "${12345}",
+    "should_erase": "${xxx}"
+  },
+  "default": {
+    "param2": "5"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "multi_query": [
+    {
+      "table_name": "test_table1",
+      "pkey": "common_user1",
+      "value_field": "result",
+      "async": false,
+      "alias": "result=igraph_common_value"
+    },
+    {
+      "table_name": "test_table2",
+      "pkey": "common_user2",
+      "value_field": "result2"
+    }
+  ],
+  "async": false
+}

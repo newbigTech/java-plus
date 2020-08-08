@@ -1,0 +1,23 @@
+{
+  "query_convertor": "converter.IGraphDataSetConvertor",
+  "table_name": "test_table",
+  "pkey": "${common_user1}",
+  "value_field": "${value_field}",
+  "igraph_data_source_key": "igraph_data_source1",
+  "igraph_data_source1": {
+    "query_convertor": "converter.IGraphDataSetConvertor",
+    "table_name": "${table_name} abc",
+    "pkey": "${common_user2}",
+    "value_field": "result",
+    "c": {
+      "d": {
+        "e": "f",
+        "ggg": {
+          "ddd": "${test}",
+          "eee": "${common_user1}"
+        }
+      }
+    }
+  },
+  "alias":"a=b"
+}

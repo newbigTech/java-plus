@@ -1,0 +1,7 @@
+{
+  "table_name": "${unit_test_table}",
+  "pkey": "${DataSet.id}",
+  "value_field": "vdo_title",
+  "async": false,
+  "filter": "test ${timestamp} > 12345"
+}

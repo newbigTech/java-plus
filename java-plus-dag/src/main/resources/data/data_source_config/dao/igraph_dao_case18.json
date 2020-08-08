@@ -1,0 +1,8 @@
+{
+  "table_name": "test_table",
+  "pkey": "common_user",
+  "value_field": "result",
+  "async": false,
+  "alias": "result=igraph_common_value",
+  "hashTableNum": 4
+}
