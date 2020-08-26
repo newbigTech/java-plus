@@ -30,6 +30,9 @@ public class TppConfigUtil {
     public static String getString(String key, String defaultValue) {
         JSONObject currentConfig;
         if (Objects.nonNull(currentConfig = ThreadLocalUtils.getMockTppConfig())) {
+        	System.out.println(JSONObject.toJSONString(currentConfig));
+        	System.out.println(key);
+        	System.out.println(defaultValue);
             return JsonUtils.getParam(currentConfig, key, defaultValue);
         } else {
 //            return ServiceFactory.getTppConfigService().getString(key, defaultValue);

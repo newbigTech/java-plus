@@ -1,4 +1,4 @@
-package org.java.plus.dag;
+package org.java.plus.dag.DAG;
 
 import org.apache.logging.log4j.core.util.Assert;
 import org.java.plus.dag.core.base.proc.BaseProcessor;

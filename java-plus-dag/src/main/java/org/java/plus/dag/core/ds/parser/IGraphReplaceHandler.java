@@ -11,30 +11,29 @@ import org.java.plus.dag.core.ds.model.KeyPair;
 import org.apache.commons.collections4.CollectionUtils;
 
 public class IGraphReplaceHandler implements ReplaceHandler {
-    public static final Splitter COMMA_SPLITTER = Splitter.on(",");
+	public static final Splitter COMMA_SPLITTER = Splitter.on(",");
 
-    @Override
-    public List<KeyPair> replace(List<Map<String, Object>> dataSetReplaceResult) {
-        if (CollectionUtils.isEmpty(dataSetReplaceResult)) {
-            return new ArrayList<>();
-        }
-        //Í¨¹ýList<Map<String, Object>> ¹¹½¨key Values ¶ÔÏó
-        //list Îª¶àÐÐ½á¹û£¬Ã¿ÐÐ½á¹û Îª $.pkey ºÍ Ìæ»»ºóµÄÖµ
-        //È¡³öÎÒÃÇËùÐèÒªµÄpKey ºÍ sKey ¼´¿É
-        // TODO: 2019-01-15 pKey sKeyÊÇ¿É±ä»¯µÄ ÐèÒª¸ÃÀàÕë¶ÔÐÞ¸Ä ¿ÉÍØÕ¹
-        return dataSetReplaceResult.stream().map(dataMap -> {
-            KeyPair keyPair = null;
-            for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
-                if (entry.getKey().contains("pkey")) {
-                    keyPair = KeyPair.from((String) entry.getValue());
-                } else if (entry.getKey().contains("skey")) {
-                    List<String> sKey = COMMA_SPLITTER.splitToList((String) entry.getValue());
-                    keyPair = KeyPair.from(sKey);
-                }
-            }
-            return keyPair;
-        }).filter(Objects::nonNull).collect(Collectors.toList());
-    }
-
+	@Override
+	public List<KeyPair> replace(List<Map<String, Object>> dataSetReplaceResult) {
+		if (CollectionUtils.isEmpty(dataSetReplaceResult)) {
+			return new ArrayList<>();
+		}
+		// é€šè¿‡List<Map<String, Object>> æž„å»ºkey Values å¯¹è±¡
+		// list ä¸ºå¤šè¡Œç»“æžœï¼Œæ¯è¡Œç»“æžœ ä¸º $.pkey å’Œ æ›¿æ¢åŽçš„å€¼
+		// å–å‡ºæˆ‘ä»¬æ‰€éœ€è¦çš„pKey å’Œ sKey å³å¯
+		// TODO: 2019-01-15 pKey sKeyæ˜¯å¯å˜åŒ–çš„ éœ€è¦è¯¥ç±»é’ˆå¯¹ä¿®æ”¹ å¯æ‹“å±•
+		return dataSetReplaceResult.stream().map(dataMap -> {
+			KeyPair keyPair = null;
+			for (Map.Entry<String, Object> entry : dataMap.entrySet()) {
+				if (entry.getKey().contains("pkey")) {
+					keyPair = KeyPair.from((String) entry.getValue());
+				} else if (entry.getKey().contains("skey")) {
+					List<String> sKey = COMMA_SPLITTER.splitToList((String) entry.getValue());
+					keyPair = KeyPair.from(sKey);
+				}
+			}
+			return keyPair;
+		}).filter(Objects::nonNull).collect(Collectors.toList());
+	}
 
 }

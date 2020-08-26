@@ -187,7 +187,7 @@ public class ThreadLocalUtils {
 //    }
 
     public static void setRecThreadLocalData(ProcessorContext context) {
-        if (Objects.nonNull(context) && Objects.nonNull(context.getTppContext())) {
+        if (Objects.nonNull(context)) {
             CONTEXT.set(context.getTppContext());
             ENABLE_TPP_LAYER.set(context.isEnableTppLayer());
             ENABLE_MANUAL_LAYER.set(context.isEnableManualLayer());
@@ -307,6 +307,10 @@ public class ThreadLocalUtils {
 
     public static JSONObject getMockTppConfig() {
         return MOCK_TPP_CONFIG.get();
+    }
+    
+    public static void setMockTppConfig(JSONObject value) {
+    	MOCK_TPP_CONFIG.set(value);
     }
 
 }

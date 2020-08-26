@@ -135,6 +135,7 @@ public class TppObjectFactory {
             Logger.onlineWarn(String.format("Error create processor instance, msg:%s, key:%s", e.getMessage(), configKey));
 //            ServiceFactory.getTPPCounter().countSum(TppCounterNames.BEAN_CREATE_ERROR.getCounterName(), 1);
             //throw new RuntimeException(instanceKey + " Create error.", e);
+            return null;
         }
         return beanObj;
     }

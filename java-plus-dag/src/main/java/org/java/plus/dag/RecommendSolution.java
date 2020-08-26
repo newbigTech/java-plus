@@ -41,7 +41,8 @@ public class RecommendSolution {
     
 
     public   List<Processor> initProcessors(ProcessorContext context) {
-        List<String> processorNames = getConfig(SolutionConfig.SOLUTION_PROCESSOR.getName());
+//        List<String> processorNames = getConfig(SolutionConfig.SOLUTION_PROCESSOR.getName());
+        List<String> processorNames = getConfig("content");
         return getProcessorList(processorNames, context);
     }
 
@@ -54,7 +55,10 @@ public class RecommendSolution {
                     newProcessorName = StringUtils.replace(processorName, StringPool.DOT, StringPool.SLASH);
                 }
                 Processor processor = TppObjectFactory.getBean(newProcessorName, Processor.class);
-                processorList.add(processor);
+                if(processor!=null) {
+                    processorList.add(processor);
+                	TppObjectFactory.getBean(newProcessorName, Processor.class);
+                  }
             } catch (Throwable t) {
 //                ServiceFactory.getSolutionLogger().error(t.getMessage(), t);
             }
