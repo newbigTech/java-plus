@@ -47,12 +47,25 @@ public class DAG {
 	}
 
 	public boolean addEdge(Vertex origin, Vertex target) {
-//	    if (hasPath(target, origin)) {
-//	      return false;
-//	    } 
+	    if (hasPath(target, origin)) {
+	      return false;
+	    } 
 		addEdgeWithNoCheck(origin, target);
 		return true;
 	}
+	
+	  private boolean hasPath(Object start, Object end) {
+		    if (start == end) {
+		      return true;
+		    }
+		    Set children = outDegree.get(start);
+		    for (Iterator it = children.iterator(); it.hasNext(); ) {
+		      if (hasPath(it.next(), end)) {
+		        return true;
+		      }
+		    }
+		    return false;
+		  }
 
 	public boolean addEdgeWithNoCheck(Vertex origin, Vertex target) {
 		outDegree.put(origin.getId(), target.getId());
@@ -63,12 +76,12 @@ public class DAG {
 	}
 
 	public void execute(Consumer consumer) {
-		Map<Object, AtomicInteger> inDegree = getObjectAtomicIntegerMap();
+		Map<Object, AtomicInteger> inDegreeAtomicIntMap = getObjectAtomicIntegerMap();
 
-		System.out.println("execute-inDegree：" + inDegree);
+		System.out.println("execute-AtomicIntegerinDegree：" + inDegreeAtomicIntMap);
 		// 入度为0的节点
 		Set sources = getSources();
-		execute_(sources, inDegree, consumer);
+		execute_(sources, inDegreeAtomicIntMap, consumer);
 	}
 
 	private Map<Object, AtomicInteger> getObjectAtomicIntegerMap() {
@@ -95,26 +108,29 @@ public class DAG {
 		return roots;
 	}
 
-	public void execute_(Set set, Map<Object, AtomicInteger> inDegree, Consumer consumer) {
+	public void execute_(Set set, Map<Object, AtomicInteger> inDegreeAtomicIntMap, Consumer consumer) {
 		System.out.println("execute_-set：" + set);
-		System.out.println("execute_-inDegree：" + inDegree);
+		System.out.println("execute_-inDegreeAtomicIntMap：" + inDegreeAtomicIntMap);
 		exec(set, consumer);
 		Set nextSet = Sets.newLinkedHashSet();
 		set.forEach(o -> {
 			outDegree.get(o).forEach(so -> {
-				if (inDegree.get(so).decrementAndGet() == 0) {
+				if (inDegreeAtomicIntMap.get(so).decrementAndGet() == 0) {
 					nextSet.add(so);
 				}
 			});
 		});
+		System.out.println("execute_-inDegreeAtomicIntMap2：" + inDegreeAtomicIntMap);
 		System.out.println("execute_-nextSet：" + nextSet);
 		if (CollectionUtils.isNotEmpty(nextSet)) {
-			execute_(nextSet, inDegree, consumer);
+			execute_(nextSet, inDegreeAtomicIntMap, consumer);
 		}
 	}
 
 	private void exec(Set set, Consumer consumer) {
+		System.out.println("exec-set-start：" + set);
 		consumer.accept(set);
+		System.out.println("exec-set-end：" + set);
 	}
 
 	public String toString() {

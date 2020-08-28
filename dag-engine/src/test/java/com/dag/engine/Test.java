@@ -47,6 +47,7 @@ public class Test {
 	    DAG chain = dag.chain(); 
 
 		System.out.println(dag);
+		System.out.println(chain);
 		Map<String, Vertex> vertexMap = dag.getVertexMap();
 		dag.execute(col -> {
 			Set set = (Set) col;
