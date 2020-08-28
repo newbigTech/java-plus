@@ -6,9 +6,7 @@ import java.util.Map;
 import java.util.Set; 
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections4.CollectionUtils;
- 
-import com.dag.rank.context.RankContext;
+import org.apache.commons.collections4.CollectionUtils; 
 import com.google.common.collect.Sets;
 
 public class DagEngine {
@@ -55,15 +53,8 @@ public class DagEngine {
 		}
 	}
 
-	private static void exec(Set set) {
-		rankContext.setStageSet(set);
-		DagProcessor dagProcessor = new DagProcessor(rankContext);
+	private static void exec(Set set) { 
+		DagProcessor dagProcessor = new DagProcessor(set);
 		dagProcessor.run();
-	}
-
-	public static void setRankContext(RankContext context) {
-		rankContext = context;
-	}
-
-	private static RankContext rankContext;
+	} 
 }
