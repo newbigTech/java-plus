@@ -1,7 +1,6 @@
 package com.dag.rank.engine;
  
-import java.util.List;
-import java.util.Set;
+import java.util.List; 
 import java.util.concurrent.CompletableFuture;
 
 import com.dag.rank.biz.face.IProcessor;
@@ -12,8 +11,7 @@ public class DagProcessor {
 
 	private RankContext rankContext;
 
-	public DagProcessor(Set set) {
-		rankContext.setStageSet(set);
+	public DagProcessor( RankContext rankContext) { 
 		this.rankContext = rankContext;
 	}
 

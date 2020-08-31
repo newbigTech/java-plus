@@ -34,8 +34,8 @@ public class Test {
 
 		RankContext rankContext = new RankContext();
 		rankContext.setDag(dag);
-		DagEngine.setRankContext(rankContext);
-		DagEngine.execute(dag.getInDegree(), dag.getOutDegree());
+		DagEngine dagEngine=new DagEngine(rankContext);
+		dagEngine.execute();
 		
 
 		System.out.println(rankContext.getItemInfoList().size());

@@ -1,31 +1,40 @@
 package com.dag.rank.engine;
- 
+
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set; 
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections4.CollectionUtils; 
+import org.apache.commons.collections4.CollectionUtils;
+
+import com.dag.rank.context.RankContext;
 import com.google.common.collect.Sets;
 
 public class DagEngine {
 
-	public static void execute(Map<String, Set<String>> inDegree, Map<String, Set<String>> outDegree) {
-		Map<String, Integer> inDegreeIntMap = getIntegerMap(inDegree);
-		// 入度为0的节点
-		Set sources = computeZeroEdgeVertices(inDegree);
-		execute_(sources, inDegreeIntMap, outDegree);
+	private RankContext context;
+
+	public DagEngine(RankContext context) {
+		this.context = context;
 	}
 
-	private static Map<String, Integer> getIntegerMap(Map<String, Set<String>> inDegree) {
+	public void execute() {
+		DAG dag = context.getDag();
+		Map<String, Integer> inDegreeIntMap = getIntegerMap(dag.getInDegree());
+		// 入度为0的节点
+		Set sources = computeZeroEdgeVertices(dag.getInDegree());
+		execute_(sources, inDegreeIntMap, dag.getOutDegree());
+	}
+
+	private Map<String, Integer> getIntegerMap(Map<String, Set<String>> inDegree) {
 		Set<String> set = inDegree.keySet();
 		// 入度表
 		return set.stream().collect(Collectors.toMap(k -> k, k -> inDegree.get(k).size()));
 	}
 
 	// 入度为0的节点
-	public static Set computeZeroEdgeVertices(Map<String, Set<String>> inDegree) {
+	private Set computeZeroEdgeVertices(Map<String, Set<String>> inDegree) {
 		Set candidates = inDegree.keySet();
 		Set roots = new LinkedHashSet(candidates.size());
 		for (Iterator it = candidates.iterator(); it.hasNext();) {
@@ -37,7 +46,7 @@ public class DagEngine {
 		return roots;
 	}
 
-	private static void execute_(Set set, Map<String, Integer> inDegreeIntMap, Map<String, Set<String>> outDegree) {
+	private void execute_(Set set, Map<String, Integer> inDegreeIntMap, Map<String, Set<String>> outDegree) {
 		exec(set);
 		Set nextSet = Sets.newLinkedHashSet();
 		set.forEach(o -> {
@@ -53,8 +62,9 @@ public class DagEngine {
 		}
 	}
 
-	private static void exec(Set set) { 
-		DagProcessor dagProcessor = new DagProcessor(set);
+	private void exec(Set stageSet) {
+		context.setStageSet(stageSet);
+		DagProcessor dagProcessor = new DagProcessor(context);
 		dagProcessor.run();
-	} 
+	}
 }
