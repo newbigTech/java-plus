@@ -1,7 +1,7 @@
 package com.dag.engine.core;
 
 import java.util.HashMap;
-import java.util.Iterator; 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -57,14 +57,16 @@ public class DAG {
 		return true;
 	}
 
-	private boolean hasPath(Object start, Object end) {
-		if (start == end) {
+	private boolean hasPath(Vertex start, Vertex end) {
+		if (start.getId() == end.getId()) {
 			return true;
 		}
 		Set children = outDegree.get(start);
-		for (Iterator it = children.iterator(); it.hasNext();) {
-			if (hasPath(it.next(), end)) {
-				return true;
+		if (children != null) {
+			for (Iterator it = children.iterator(); it.hasNext();) {
+				if (hasPath(vertexMap.get(it.next()), end)) {
+					return true;
+				}
 			}
 		}
 		return false;

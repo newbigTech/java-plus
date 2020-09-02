@@ -9,17 +9,9 @@ import com.google.common.collect.Sets;
 
 public class DAG {
 
-	private Map<String, Vertex> vertexMap = new HashMap<String, Vertex>();
+	private Map<String, Node> vertexMap = new HashMap<String, Node>();
 	private Map<String, Set<String>> inDegree = new HashMap<String, Set<String>>();
 	private Map<String, Set<String>> outDegree = new HashMap<String, Set<String>>();
-
-	public DAG() {
-	}
-
-	public DAG(Map<String, Set<String>> inDegree, Map<String, Set<String>> outDegree) {
-		this.inDegree = inDegree;
-		this.outDegree = outDegree;
-	}
 
 	public Map<String, Set<String>> getInDegree() {
 		return inDegree;
@@ -29,11 +21,11 @@ public class DAG {
 		return outDegree;
 	}
 
-	public Map<String, Vertex> getVertexs() {
+	public Map<String, Node> getVertexs() {
 		return vertexMap;
 	}
 
-	public void addVertex(Vertex vertex) {
+	public void addVertex(Node vertex) {
 		if (!inDegree.containsKey(vertex.getId())) {
 			inDegree.put(vertex.getId(), Sets.newLinkedHashSet());
 		}
@@ -43,10 +35,10 @@ public class DAG {
 		vertexMap.put(vertex.getId(), vertex);
 	}
 
-	public boolean addEdge(Vertex from_Vertex, Vertex to_Vertex) {
-//		if (hasPath(to_Vertex, from_Vertex)) {
-//			return false;
-//		}
+	public boolean addEdge(Node from_Vertex, Node to_Vertex) {
+		if (hasPath(to_Vertex, from_Vertex)) {
+			return false;
+		}
 		addVertex(from_Vertex);
 		addVertex(to_Vertex);
 		inPut(from_Vertex, to_Vertex);
@@ -62,15 +54,17 @@ public class DAG {
 			return true;
 		}
 		Set children = outDegree.get(start);
-		for (Iterator it = children.iterator(); it.hasNext();) {
-			if (hasPath(it.next(), end)) {
-				return true;
+		if (children != null) {
+			for (Iterator it = children.iterator(); it.hasNext();) {
+				if (hasPath(it.next(), end)) {
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 
-	public void inPut(Vertex from_Vertex, Vertex to_Vertex) {
+	public void inPut(Node from_Vertex, Node to_Vertex) {
 		Set<String> values = inDegree.get(to_Vertex.getId());
 		if (values == null) {
 			values = Sets.newLinkedHashSet();
@@ -79,7 +73,7 @@ public class DAG {
 		inDegree.put(to_Vertex.getId(), values);
 	}
 
-	public void outPut(Vertex from_Vertex, Vertex to_Vertex) {
+	public void outPut(Node from_Vertex, Node to_Vertex) {
 		Set<String> values = outDegree.get(from_Vertex.getId());
 		if (values == null) {
 			values = Sets.newLinkedHashSet();
@@ -87,7 +81,7 @@ public class DAG {
 		values.add(to_Vertex.getId());
 		outDegree.put(from_Vertex.getId(), values);
 	}
-
+	 
 	public String toString() {
 		return "OutDegree: " + outDegree.toString() + " InDegree: " + inDegree.toString();
 	}

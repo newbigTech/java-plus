@@ -13,14 +13,17 @@ public class MatchRecall implements IProcessor {
 	@Override
 	public void doInit(RankContext context) {
 		 
-		System.out.println("--------------doInit-------------");
+		System.out.println("threadId: "  + Thread.currentThread().getId());
+
+		System.out.println("doInit:"+context.getMapInfo().get("vid"));
 	}
 
 	@Override
 	public void doProcess(RankContext context) {
 		try {
-			System.out.println("-------------doProcess--------------");
+			System.out.println("-------------MatchRecall doProcess--------------");
 			List<ItemInfo> list = 	ItemSearchService.search(new SearchPara());
+			Thread.sleep(100);
 			context.setItemInfoList(list);
 		} catch (Exception e) {
 //			logger.error("ItemWeight doWeight is error", e);

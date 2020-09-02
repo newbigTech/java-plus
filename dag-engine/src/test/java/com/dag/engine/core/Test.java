@@ -12,7 +12,7 @@ public class Test {
 		Vertex f = new Vertex("f", "666-f");
 		Vertex g = new Vertex("g", "777-g");
 		Vertex h = new Vertex("h", "888-h");
-		Vertex j = new Vertex("j", "999-j");
+		Vertex j = new Vertex("j", "999-j"); 
 		dag.addEdge(h, g);
 		dag.addEdge(g, b);
 		dag.addEdge(a, b);

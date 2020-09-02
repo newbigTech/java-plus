@@ -3,7 +3,7 @@ package rank;
 import com.dag.rank.context.RankContext;
 import com.dag.rank.engine.DAG;
 import com.dag.rank.engine.DagEngine;
-import com.dag.rank.engine.Vertex;
+import com.dag.rank.engine.Node;
 
 public class Test {
 
@@ -11,16 +11,21 @@ public class Test {
 		DAG dag = new DAG();
 		String processorName = "com.dag.rank.biz.flow.recall.MatchRecall";
 		String processorName2 = "com.dag.rank.biz.flow.filter.ItemFilter";
-	
-		Vertex a = new Vertex("a", "111-a", processorName);
-		Vertex b = new Vertex("b", "222-b", processorName);
-		Vertex c = new Vertex("c", "333-c", processorName);
-		Vertex d = new Vertex("d", "444-d", processorName);
-		Vertex e = new Vertex("e", "555-e", processorName);
-		Vertex f = new Vertex("f", "666-f", processorName);
-		Vertex g = new Vertex("g", "777-g", processorName);
-		Vertex h = new Vertex("h", "888-h", processorName);
-		Vertex j = new Vertex("j", "999-j", processorName2);
+
+		boolean async1 = true;
+		boolean async2 = true;
+		int timeout = 10;
+		int timeout2 = 200;
+
+		Node a = new Node("a", "111-a", async1, timeout, processorName);
+		Node b = new Node("b", "222-b", async1, timeout, processorName);
+		Node c = new Node("c", "333-c", async1, timeout, processorName);
+		Node d = new Node("d", "444-d", async1, timeout, processorName);
+		Node e = new Node("e", "555-e", async2, timeout, processorName2);
+		Node f = new Node("f", "666-f", async2, timeout2, processorName2);
+		Node g = new Node("g", "777-g", async1, timeout, processorName);
+		Node h = new Node("h", "888-h", async1, timeout, processorName);
+		Node j = new Node("j", "999-j", async1, timeout2, processorName2);
 		dag.addEdge(h, g);
 		dag.addEdge(g, b);
 		dag.addEdge(a, b);
@@ -31,13 +36,16 @@ public class Test {
 		dag.addEdge(f, j);
 
 		System.out.println(dag);
-
 		RankContext rankContext = new RankContext();
-		rankContext.setDag(dag);
-		DagEngine dagEngine=new DagEngine(rankContext);
-		dagEngine.execute();
-		
-
+		try {
+			rankContext.setDag(dag);
+			DagEngine dagEngine = new DagEngine(rankContext);
+			dagEngine.execute();
+		} catch ( Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("-------------Test-------------");
 		System.out.println(rankContext.getItemInfoList().size());
 	}
 
