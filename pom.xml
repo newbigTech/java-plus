@@ -9,6 +9,7 @@
 		<module>java-plus-dag</module>
     <module>dag-scheduler</module>
     <module>dag-engine</module>
+    <module>java-plus-leetcode</module>
   </modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
