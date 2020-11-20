@@ -2,7 +2,7 @@ package com.java.plus.leetcode.util;
 
 import com.java.plus.leetcode.model.ListNode;
 
-public class Utils {
+public class ListNodeUtils {
 	
 	/**
 	 * 创建一个简单的链表{1,2,3,4,5,...,9}
