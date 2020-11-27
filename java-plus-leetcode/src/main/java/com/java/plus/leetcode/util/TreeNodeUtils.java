@@ -47,7 +47,7 @@ public class TreeNodeUtils {
 		while (head != null) { 
 			System.out.print(head.val + "->"); 
 			head = head.right;
-		}
+		} 
 		System.out.println();
 	}
 	
